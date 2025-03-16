@@ -1,0 +1,57 @@
+# Flutter/Dart/Pub related
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+build/
+.melos/
+
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.history
+.svn/
+.swiftpm/
+
+# IDE & Editor specific
+*.iml
+*.ipr
+*.iws
+.idea/
+.vscode/
+*.launch
+
+# Android related
+android/.cxx/
+android/app/debug/
+android/app/profile/
+android/app/release/
+android/key.properties
+
+# Xcode related
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/App.framework
+ios/Flutter/Flutter.podspec
+ios/Flutter/Generated.xcconfig
+ios/Flutter/*.xcworkspace
+xcuserdata/
+DerivedData/
+*.pbxuser
+*.xcuserstate
+
+# Obfuscation & Symbolication related
+app.*.symbols
+app.*.map.json
+
+# Firebase related
+firebase.json
+google-services.json
+ios/Runner/GoogleService-Info.plist
