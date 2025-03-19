@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:todoapp/theme/appcolor.dart';
+import 'package:todoapp/ui%20helper/btn.dart';
 
 void showCategorySelection(BuildContext context) {
   showDialog(
@@ -37,19 +38,8 @@ void showCategorySelection(BuildContext context) {
                   },
                 ),
                 SizedBox(height: 10),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Appcolor.primary,
-                    minimumSize: Size(double.infinity, 50),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(4)),
-                  ),
-                  child: Text("Add Category",
-                      style: TextStyle(fontSize: 16, color: Colors.white)),
-                ),
+            
+                Btn(ontap: (){Navigator.pop(context);}, text: 'Add Category')
               ],
             ),
           ),

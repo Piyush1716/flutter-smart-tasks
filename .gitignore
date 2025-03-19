@@ -55,3 +55,4 @@ app.*.map.json
 firebase.json
 google-services.json
 ios/Runner/GoogleService-Info.plist
+.qodo

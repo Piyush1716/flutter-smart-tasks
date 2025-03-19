@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:todoapp/Task%20Pages/TaskDetailsPage.dart';
+import 'package:todoapp/Task%20Pages/task_item.dart';
 import 'package:todoapp/home/add_task_screen.dart';
 import 'package:todoapp/home/category_selection_page.dart';
 import 'package:todoapp/pages/loginpage.dart';
@@ -33,7 +35,7 @@ class HomePage extends StatelessWidget {
           onPressed: ()=> showCategorySelection(context),
         ),
         actions: [
-          Icon(Icons.person,),
+          Icon(Icons.person),
           SizedBox(width: 10),
         ],
       ),
@@ -50,7 +52,7 @@ class HomePage extends StatelessWidget {
             padding: EdgeInsets.all(16),
             children: snapshot.data!.docs.map((task) {
               var data = task.data() as Map<String, dynamic>;
-              return _buildTaskItem(data);
+              return TaskItem(data: data, );
             }).toList(),
           );
         },
@@ -98,45 +100,6 @@ class HomePage extends StatelessWidget {
             style: TextStyle(fontSize: 14, color: Colors.white70),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildTaskItem(Map<String, dynamic> data) {
-    return Card(
-      color: Colors.grey[850],
-      margin: EdgeInsets.symmetric(vertical: 8),
-      child: Padding(
-        padding: EdgeInsets.all(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              data['title'] ?? 'No Title',
-              style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white),
-            ),
-            SizedBox(height: 5),
-            Text(
-              "Today At ${data['dueTime'] ?? 'N/A'}",
-              style: TextStyle(fontSize: 14, color: Colors.white70),
-            ),
-            SizedBox(height: 8),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Chip(
-                  backgroundColor: Colors.blueAccent,
-                  label: Text(data['category'] ?? 'General',
-                      style: TextStyle(color: Colors.white)),
-                ),
-                Icon(Icons.flag, color: Colors.white70),
-              ],
-            ),
-          ],
-        ),
       ),
     );
   }
