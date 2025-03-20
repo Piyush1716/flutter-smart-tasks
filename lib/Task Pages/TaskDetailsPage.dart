@@ -49,16 +49,16 @@ class TaskDetailsPage extends StatelessWidget {
             TaskDetailItem(
                 icon: LucideIcons.clock,
                 label: 'Task Time',
-                value: formatTimestamp(data['createdAt'])),
+                value: timeAndDate(data['createdAt'])),
             TaskDetailItem(
                 icon: LucideIcons.mapPin,
                 label: 'Task Category',
-                value: data['category'] ?? 'General',
+                value: data['category']==''? 'General' : data['category'],
                 isBadge: true),
             TaskDetailItem(
                 icon: LucideIcons.flag,
                 label: 'Task Priority',
-                value: data['priority'] ?? 'Default',
+                value: data['priority'] == '' ? 'Default' : data['priority'],
                 isBadge: true),
             TaskDetailItem(
                 icon: LucideIcons.list,

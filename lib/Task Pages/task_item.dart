@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todoapp/Task%20Pages/TaskDetailsPage.dart';
 import 'package:todoapp/theme/appcolor.dart';
+import 'package:todoapp/ui%20helper/TimeStamp_to_date.dart';
 
 class TaskItem extends StatelessWidget {
   final Map<String, dynamic> data;
@@ -34,7 +35,7 @@ class TaskItem extends StatelessWidget {
               ),
               const SizedBox(height: 5),
               Text(
-                "Today At ${data['dueTime'] ?? 'N/A'}",
+                "DueDate ${onlyDate(data['dueDate'])}",
                 style: const TextStyle(fontSize: 14, color: Colors.white70),
               ),
               const SizedBox(height: 8),
@@ -44,7 +45,7 @@ class TaskItem extends StatelessWidget {
                   Chip(
                     backgroundColor: Colors.blueAccent,
                     label: Text(
-                      data['category'] ?? 'General',
+                      data['category'] == '' ? 'General' : data['category'],
                       style: const TextStyle(color: Colors.white),
                     ),
                   ),

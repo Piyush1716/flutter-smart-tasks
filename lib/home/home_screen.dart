@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:todoapp/Task%20Pages/TaskDetailsPage.dart';
 import 'package:todoapp/Task%20Pages/task_item.dart';
 import 'package:todoapp/home/add_task_screen.dart';
 import 'package:todoapp/home/category_selection_page.dart';

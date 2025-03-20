@@ -22,7 +22,7 @@ class TaskServices {
           .add({
         "title": title,
         "description": description,
-        "dueDate": dueDate,
+        "dueDate": dueDate ?? DateTime.now().add(Duration(days: 5)),
         "isCompleted": false,
         "category" : "",
         "priority" : "",

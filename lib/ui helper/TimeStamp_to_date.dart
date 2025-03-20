@@ -1,7 +1,12 @@
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-String formatTimestamp(Timestamp timestamp) {
+String timeAndDate(Timestamp timestamp) {
   DateTime dateTime = timestamp.toDate();
-  return DateFormat('yyyy-MM-dd HH:mm').format(dateTime); // Customize format as needed
+  return DateFormat('dd-MM-yyyy HH:mm').format(dateTime); // Customize format as needed
+}
+
+String onlyDate(Timestamp timestamp) {
+  DateTime dateTime = timestamp.toDate();
+  return DateFormat('dd-MM').format(dateTime); // Customize format as needed
 }
