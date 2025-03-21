@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:todoapp/firebase_options.dart';
 import 'package:todoapp/home/home_screen.dart';
 import 'package:todoapp/pages/loginpage.dart';
+import 'package:todoapp/pages/profile_page.dart';
 import 'package:todoapp/services/auth_services.dart';
 
 void main() async {
@@ -20,7 +21,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: authServices.getCureUser()!=null ? HomePage() : LoginPage(),
+      // home: authServices.getCureUser()!=null ? HomePage() : LoginPage(),
+      home: ProfilePage(),
     );
   }
 }

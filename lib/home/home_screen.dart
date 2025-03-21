@@ -5,6 +5,7 @@ import 'package:todoapp/Task%20Pages/task_item.dart';
 import 'package:todoapp/home/add_task_screen.dart';
 import 'package:todoapp/home/category_selection_page.dart';
 import 'package:todoapp/pages/loginpage.dart';
+import 'package:todoapp/pages/profile_page.dart';
 import 'package:todoapp/services/auth_services.dart';
 import 'package:todoapp/services/task_services.dart';
 import 'package:todoapp/theme/appcolor.dart';
@@ -91,6 +92,7 @@ class _HomePageState extends State<HomePage> {
           );
         },
         backgroundColor: Appcolor.primary,
+        shape: CircleBorder(),
         child: Icon(Icons.add, color: Colors.white),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -123,25 +125,37 @@ class _HomePageState extends State<HomePage> {
   Widget _buildBottomNavBar() {
     return BottomAppBar(
       shape: CircularNotchedRectangle(),
-      notchMargin: 8.0,
+      notchMargin: 4.0,
       color: Colors.grey[900],
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 10),
+        padding: EdgeInsets.symmetric(horizontal: 10,),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Row(
               children: [
-                _buildNavItem(Icons.home, "Index", true),
+                _buildNavItem(Icons.home, "Index", true, () {
+                  // Navigator.pushReplacement(context,
+                  //     MaterialPageRoute(builder: (context) => HomePage()));
+                }),
                 SizedBox(width: 30),
-                _buildNavItem(Icons.calendar_today, "Calendar", false),
+                _buildNavItem(Icons.calendar_today, "Calendar", false, () {
+                  // Navigator.pushReplacement(context,
+                  //     MaterialPageRoute(builder: (context) => HomePage()));
+                }),
               ],
             ),
             Row(
               children: [
-                _buildNavItem(Icons.access_time, "Focus", false),
+                _buildNavItem(Icons.access_time, "Focus", false, () {
+                  // Navigator.pushReplacement(context,
+                  //     MaterialPageRoute(builder: (context) => HomePage()));
+                }),
                 SizedBox(width: 30),
-                _buildNavItem(Icons.person, "Profile", false),
+                _buildNavItem(Icons.person, "Profile", false, () {
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) => ProfilePage()));
+                }),
               ],
             ),
           ],
@@ -150,15 +164,15 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildNavItem(IconData icon, String label, bool isActive) {
+  Widget _buildNavItem(IconData icon, String label, bool isActive, void Function() ontap) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(icon, color: isActive ? Colors.white : Colors.white60),
+        IconButton(icon: Icon(icon,size: 24, color: isActive ? Colors.white : Colors.white60), onPressed: ontap,),
         Text(
           label,
           style: TextStyle(
-            fontSize: 12,
+            fontSize: 10,
             color: isActive ? Colors.white : Colors.white60,
           ),
         ),
