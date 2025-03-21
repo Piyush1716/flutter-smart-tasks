@@ -9,11 +9,20 @@ import 'package:todoapp/services/auth_services.dart';
 import 'package:todoapp/services/task_services.dart';
 import 'package:todoapp/theme/appcolor.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+
+  bool _completed = true;
+
   Stream<QuerySnapshot> getTasks(){
     final TaskServices taskServices = TaskServices();
-    return taskServices.getTasks();
+    return taskServices.getTaskByFilter(_completed); // based on selected return completed or incompleted tasks.
   }
+
   Future<void> logout(BuildContext context) async {
     final AuthServices authServices = AuthServices();
     await authServices.signout();
@@ -38,23 +47,31 @@ class HomePage extends StatelessWidget {
           SizedBox(width: 10),
         ],
       ),
-      body: StreamBuilder<QuerySnapshot>(
-        stream: getTasks(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          }
-          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return _buildEmptyTaskUI();
-          }
-          return ListView(
-            padding: EdgeInsets.all(16),
-            children: snapshot.data!.docs.map((task) {
-              var data = task.data() as Map<String, dynamic>;
-              return TaskItem(data: data, );
-            }).toList(),
-          );
-        },
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _dropDown((bool newval){
+            setState(() {
+              _completed = newval;
+            });
+            // we have used call back function bacauseif we pass the _completed 
+            // it will not passed by reference so it will not changed so.. 
+          }),
+          Expanded(
+            child: StreamBuilder(
+              stream: getTasks(),
+              builder: (context, snapshot){
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                }
+                if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                  return _buildEmptyTaskUI();
+                }
+                return _buildTasks(snapshot);
+              },
+            ),
+          )
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -147,5 +164,47 @@ class HomePage extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  Widget _buildTasks(AsyncSnapshot<QuerySnapshot> snapshot){
+    return ListView(
+      padding: EdgeInsets.all(16),
+      children: snapshot.data!.docs.map((task) {
+        var data = task.data() as Map<String, dynamic>;
+        return TaskItem(
+          data: data,
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _dropDown(void Function(bool) change_filter){
+    return Container(
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+            margin: EdgeInsets.symmetric(horizontal: 16,),
+            decoration: BoxDecoration(
+              color: Colors.grey[800], // Match image style
+              borderRadius: BorderRadius.circular(6),
+            ),
+            child: DropdownButton<bool>(
+              borderRadius: BorderRadius.circular(15),
+              value: _completed,
+              dropdownColor: Appcolor.secodary, // Dark dropdown
+              underline: SizedBox(), // Hide default underline
+              icon: Icon(Icons.keyboard_arrow_down, color: Colors.white),
+              style: TextStyle(color: Colors.white,),
+              items: [true, false].map((bool value) {
+                return DropdownMenuItem<bool>(
+                  value: value,
+                  child: Text(value ? 'Completed' : 'Incomplete'),
+                );
+              }).toList(),
+              onChanged: (bool? newval){
+                if(newval != null){
+                  change_filter(newval);
+                }
+              }
+            ),
+          );
   }
 }

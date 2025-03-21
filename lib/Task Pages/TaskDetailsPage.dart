@@ -65,6 +65,10 @@ class TaskDetailsPage extends StatelessWidget {
                 label: 'Sub - Task',
                 value: 'Add Sub - Task',
                 isButton: true),
+            TaskDetailItem(
+                icon: LucideIcons.bookMarked,
+                label: 'Completed',
+                value: data['isCompleted'] ? 'Completed' : 'Not Completed',),
             SizedBox(height: 20),
             Divider(color: Appcolor.secodary, thickness: 1),
             SizedBox(height: 10),

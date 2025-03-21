@@ -45,12 +45,43 @@ class TaskServices {
 
   // Get task by user
   Stream<QuerySnapshot> getTasks() {
-    String userId = FirebaseAuth.instance.currentUser!.uid;
+    String? userId = _authServices.getCureUser()?.uid;
     return _firestore
         .collection("users")
         .doc(userId)
         .collection("tasks")
-        .orderBy("dueDate")
+        .orderBy("title")
+        .snapshots();
+  }
+  
+  Stream<QuerySnapshot> getCompletedTasks(){
+    String? userId = _authServices.getCureUser()?.uid;
+    return _firestore
+        .collection('users')
+        .doc(userId)
+        .collection('tasks')
+        .where('isCompleted', isEqualTo: true)
+        .snapshots();
+  }
+
+
+  Stream<QuerySnapshot> getTaskByFilter(bool completed){
+    String? userId = _authServices.getCureUser()?.uid;
+    return _firestore
+        .collection('users')
+        .doc(userId)
+        .collection('tasks')
+        .where('isCompleted', isEqualTo: completed)
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot> getInCompletedTasks() {
+    String? userId = _authServices.getCureUser()?.uid;
+    return _firestore
+        .collection('users')
+        .doc(userId)
+        .collection('tasks')
+        .where('isCompleted', isEqualTo: false)
         .snapshots();
   }
 
@@ -66,5 +97,19 @@ class TaskServices {
     }
     Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>HomePage()), (route)=>false);
   }
+
+  Future<void> markAsCompleted(String taskId) async {
+    try{
+      String? userId = _authServices.getCureUser()?.uid;
+      print(taskId);
+      await _firestore.collection('users').doc(userId).collection('tasks').doc(taskId).update({
+        'isCompleted' : true
+      });
+    }
+    catch(e){
+      print('${e}cant update task as completed!');
+    }
+  }
+
 
 }

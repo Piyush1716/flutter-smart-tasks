@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:todoapp/Task%20Pages/TaskDetailsPage.dart';
+import 'package:todoapp/services/task_services.dart';
 import 'package:todoapp/theme/appcolor.dart';
 import 'package:todoapp/ui%20helper/TimeStamp_to_date.dart';
+import 'package:todoapp/ui%20helper/btn.dart';
 
 class TaskItem extends StatelessWidget {
   final Map<String, dynamic> data;
@@ -16,6 +18,9 @@ class TaskItem extends StatelessWidget {
           context,
           MaterialPageRoute(builder: (context) => TaskDetailsPage(data: data)),
         );
+      },
+      onLongPress: (){
+        _showConfirmBox(context, data['taskId']);
       },
       child: Card(
         color: Appcolor.secodary,
@@ -58,4 +63,36 @@ class TaskItem extends StatelessWidget {
       ),
     );
   }
+
+  void _showConfirmBox(BuildContext context, String taskId) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: Appcolor.secodary,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+        title: Text('Complete Task',
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+        content: Text(
+          'Do you want to mark this Task as Completed?',
+          style: TextStyle(color: Colors.white70),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('Cancel', style: TextStyle(color: Appcolor.primary)),
+          ),
+          Btn(
+            ontap: () {
+              final TaskServices _taskServices = TaskServices();
+              _taskServices.markAsCompleted(taskId);
+              Navigator.pop(context);
+            },
+            text: 'Complete',
+            width: 100,
+          ),
+        ],
+      ),
+    );
+  }
+
 }
