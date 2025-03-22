@@ -1,27 +1,31 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:todoapp/home/home_screen.dart';
 import 'package:todoapp/services/auth_services.dart';
 import 'package:todoapp/theme/appcolor.dart';
-import 'package:todoapp/pages/registerpage.dart';
+import 'package:todoapp/sign%20in%20up/loginpage.dart';
 
-class LoginPage extends StatelessWidget {
+class RegisterPage extends StatelessWidget {
 
   final TextEditingController email = TextEditingController();
   final TextEditingController pass = TextEditingController();
   final TextEditingController name = TextEditingController();
 
-  LoginPage({super.key});
+  RegisterPage({super.key});
+  Future<void> signup(BuildContext context, String email, pass, name) async {
+    final AuthServices auth = AuthServices();
 
-  Future<void> login(BuildContext context,{ String email='piyush@gmail.com', pass='password', name='Piyush'}) async {
-    AuthServices auth = AuthServices();
-    User? user = await auth.signin(email, pass, name);
-    if(user!=null){
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>HomePage()));
+    if(email!='' && pass!='' && name!='' ){
+      try{
+        await auth.signup(email, pass, name);
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>HomePage()));
+      }
+      catch(e){
+        print(e);
+      }
     }
     else{
-      print('error');
+      print('Error!!');
     }
   }
 
@@ -32,8 +36,13 @@ class LoginPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.black,
         elevation: 0,
-        leading: Icon(Icons.arrow_back, color: Colors.white), 
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
+      ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20),
         child: Column(
@@ -43,7 +52,7 @@ class LoginPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Login",
+                    "Register",
                     style: TextStyle(
                       fontSize: 32,
                       fontWeight: FontWeight.bold,
@@ -72,10 +81,11 @@ class LoginPage extends StatelessWidget {
                   SizedBox(height: 5),
                   TextField(
                     controller: email,
+                    obscureText: true,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: Colors.grey[900],
-                      hintText: "Enter your Email",
+                      hintText: 'Enter your Email',
                       hintStyle: TextStyle(color: Colors.white60),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(4),
@@ -105,8 +115,7 @@ class LoginPage extends StatelessWidget {
                   SizedBox(height: 30),
                   ElevatedButton(
                     onPressed: () {
-                      // login(context, email: email.text, pass: pass.text, name: name.text);
-                      login(context);
+                      signup(context, email.text, pass.text, name.text);
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Appcolor.primary,
@@ -114,7 +123,7 @@ class LoginPage extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(4)),
                     ),
-                    child: Text("LOGIN",
+                    child: Text("Register",
                         style: TextStyle(fontSize: 16, color: Colors.white)),
                   ),
                   SizedBox(height: 20),
@@ -182,17 +191,12 @@ class LoginPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Don\'t have an account?",
+                      "Already have an account?",
                       style: TextStyle(color: Colors.white70),
                     ),
-                    TextButton(
-                        onPressed: () {
-                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>RegisterPage()));
-                        },
-                        child: Text(
-                          'Register',
-                          style: TextStyle(color: Colors.white),
-                        ))
+                    TextButton(onPressed: (){
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>LoginPage()));
+                    }, child: Text('Login', style: TextStyle(color: Colors.white),))
                   ],
                 ),
               ),

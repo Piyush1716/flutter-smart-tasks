@@ -4,8 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:todoapp/Task%20Pages/task_item.dart';
 import 'package:todoapp/home/add_task_screen.dart';
 import 'package:todoapp/home/category_selection_page.dart';
-import 'package:todoapp/pages/loginpage.dart';
-import 'package:todoapp/pages/profile_page.dart';
+import 'package:todoapp/sign%20in%20up/loginpage.dart';
+import 'package:todoapp/home/profile_page.dart';
 import 'package:todoapp/services/auth_services.dart';
 import 'package:todoapp/services/task_services.dart';
 import 'package:todoapp/theme/appcolor.dart';
@@ -17,8 +17,12 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  bool _completed = true;
-
+  bool _completed = false;
+  Map<String, dynamic>? user;
+  Future<void> getUserDetail() async {
+    final AuthServices auth = AuthServices();
+    user = await auth.getUserData();
+  }
   Stream<QuerySnapshot> getTasks(){
     final TaskServices taskServices = TaskServices();
     return taskServices.getTaskByFilter(_completed); // based on selected return completed or incompleted tasks.

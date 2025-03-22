@@ -2,9 +2,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:todoapp/firebase_options.dart';
 import 'package:todoapp/home/home_screen.dart';
-import 'package:todoapp/pages/loginpage.dart';
-import 'package:todoapp/pages/profile_page.dart';
 import 'package:todoapp/services/auth_services.dart';
+import 'package:todoapp/slider%20and%20start/onboarding_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,8 +20,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      // home: authServices.getCureUser()!=null ? HomePage() : LoginPage(),
-      home: ProfilePage(),
+      home: authServices.getCureUser()!=null ? HomePage() : OnboardingScreen(),
     );
   }
 }

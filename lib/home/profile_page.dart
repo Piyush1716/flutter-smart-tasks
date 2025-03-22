@@ -1,23 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:todoapp/home/add_task_screen.dart';
 import 'package:todoapp/home/home_screen.dart';
-import 'package:todoapp/pages/loginpage.dart';
+import 'package:todoapp/services/task_services.dart';
 import 'package:todoapp/services/auth_services.dart';
+import 'package:todoapp/slider%20and%20start/onboarding_screen.dart';
 import 'package:todoapp/theme/appcolor.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
-  State<ProfilePage> createState() => _HomePageState();
+  State<ProfilePage> createState() => _ProfilePage();
 }
 
-class _HomePageState extends State<ProfilePage> {
-  Future<void> logout(BuildContext context) async {
-    final AuthServices authServices = AuthServices();
-    await authServices.signout();
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => LoginPage()));
+class _ProfilePage extends State<ProfilePage> {
+  int inComplete_cnt = 0 , completed_cnt = 0;
+  String user_name = '';
+  final TaskServices taskServices = TaskServices();
+  final AuthServices authServices = AuthServices();
+  @override
+  void initState() {
+    super.initState();
+    getTaskCounts();
+    getuserdata();
   }
-
+  getTaskCounts() async {
+    inComplete_cnt = await taskServices.getInCompletedTasksCount();
+    completed_cnt = await taskServices.getCompletedTasksCount();
+    setState(() {
+      
+    });
+  }
+  getuserdata() async {
+    final userdata = await authServices.getUserData();
+    if(userdata!=null) {
+      user_name = userdata['name'];
+    }
+    setState(() {
+      
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,17 +52,17 @@ class _HomePageState extends State<ProfilePage> {
               const SizedBox(height: 20),
               Icon(Icons.person, size: 50,color: Colors.white,),
               const SizedBox(height: 10),
-              const Text(
-                'Martha Hays',
+              Text(
+                user_name,
                 style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  _taskStatusCard('10 Task left'),
+                  _taskStatusCard(inComplete_cnt ,' Task left'),
                   const SizedBox(width: 10),
-                  _taskStatusCard('5 Task done'),
+                  _taskStatusCard(completed_cnt ,' Task done'),
                 ],
               ),
               SizedBox(height: 30),
@@ -59,7 +79,11 @@ class _HomePageState extends State<ProfilePage> {
                     _settingsOption(Icons.feedback, 'Help & Feedback'),
                     _settingsOption(Icons.support, 'Support US'),
                     TextButton.icon(
-                      onPressed: () {},
+                      onPressed: () {
+                        final AuthServices auth = AuthServices();
+                        auth.signout();
+                        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>OnboardingScreen()), (route) => false);
+                      },
                       icon: const Icon(Icons.logout, color: Colors.red),
                       label: const Text('Log out',
                           style: TextStyle(color: Colors.red)),
@@ -167,7 +191,7 @@ class _HomePageState extends State<ProfilePage> {
     );
   }
 
-  Widget _taskStatusCard(String text) {
+  Widget _taskStatusCard(int cnt, String text) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       decoration: BoxDecoration(
@@ -175,7 +199,7 @@ class _HomePageState extends State<ProfilePage> {
         borderRadius: BorderRadius.circular(10),
       ),
       child: Text(
-        text,
+        cnt.toString()+text,
         style: const TextStyle(color: Colors.white, fontSize: 16),
       ),
     );
@@ -192,5 +216,5 @@ class _HomePageState extends State<ProfilePage> {
       onTap: () {},
     );
   }
-
+  
 }

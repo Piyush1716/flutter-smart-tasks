@@ -100,7 +100,6 @@ class TaskServices {
   Future<void> markAsCompleted(String taskId) async {
     try{
       String? userId = _authServices.getCureUser()?.uid;
-      print(taskId);
       await _firestore.collection('users').doc(userId).collection('tasks').doc(taskId).update({
         'isCompleted' : true
       });
@@ -110,5 +109,30 @@ class TaskServices {
     }
   }
 
+  Future<int> getInCompletedTasksCount() async {
+    String? userId = _authServices.getCureUser()?.uid;
+    if (userId == null) return 0; // Return 0 if user is not logged in
 
+    QuerySnapshot snapshot = await _firestore
+        .collection('users')
+        .doc(userId)
+        .collection('tasks')
+        .where('isCompleted', isEqualTo: false)
+        .get(); // Fetch the data once
+
+    return snapshot.docs.length; // Return the count of documents
+  }
+  Future<int> getCompletedTasksCount() async {
+    String? userId = _authServices.getCureUser()?.uid;
+    if (userId == null) return 0; // Return 0 if user is not logged in
+
+    QuerySnapshot snapshot = await _firestore
+        .collection('users')
+        .doc(userId)
+        .collection('tasks')
+        .where('isCompleted', isEqualTo: true)
+        .get(); // Fetch the data once
+
+    return snapshot.docs.length; // Return the count of documents
+  }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:todoapp/pages/loginpage.dart';
-import 'package:todoapp/pages/registerpage.dart';
+import 'package:todoapp/sign%20in%20up/loginpage.dart';
+import 'package:todoapp/sign%20in%20up/registerpage.dart';
 import 'package:todoapp/theme/appcolor.dart';
 
 class StartScreen extends StatelessWidget {

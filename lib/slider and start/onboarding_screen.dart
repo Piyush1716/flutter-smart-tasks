@@ -18,7 +18,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     return Scaffold(
       backgroundColor: Colors.black, // Dark theme background
       body: Stack(
-        children: [
+          children: [
           PageView(
             controller: _controller,
             onPageChanged: (index) {
